@@ -21,9 +21,17 @@ class Club {
 
 	method sociosDestacados() = actividades.map({ actividad => actividad.lider() })
 
+	method sociosDestacadosEstrella() = self.sociosDestacados().filter({ socio => socio.esEstrella() })
+
 	method esEstrella(socio) = perfilClub.esEstrella(socio)
 
 	method cantidadActividades(jugador) = actividades.count({ actividad => actividad.participa(jugador) })
+
+	method sancionar() {
+		if (socios.size() > 500) {
+			actividades.forEach({ actividad => actividad.sancionar()})
+		}
+	}
 
 }
 
