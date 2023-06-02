@@ -11,6 +11,8 @@ class Actividad {
 	}
 
 	method sancionar()
+	
+	method esExperimentada()
 
 }
 
@@ -43,6 +45,7 @@ class ActividadDeportiva inherits Actividad {
 
 	method evaluacionSanciones() = cantidadSanciones * puntosPorSanciones
 
+	override method esExperimentada() = false
 }
 
 class ActividadSocial inherits Actividad {
@@ -59,8 +62,10 @@ class ActividadSocial inherits Actividad {
 	}
 
 	method suspendida() = suspendida
-	
+
 	override method evaluacion() = if (suspendida) 0 else valorEvaluacion
+
+	override method esExperimentada() = participantes.all({ jugador => jugador.partidosJugados() >= 10 })
 
 }
 
@@ -70,8 +75,8 @@ class Futbol inherits ActividadDeportiva {
 	const puntosPorEstrellas = 5
 
 	method evaluacionEstrellas() = self.estrellas().size() * puntosPorEstrellas
-	
-	override method evaluacionSanciones() = super() - sancionExtra + self.evaluacionEstrellas() 
+
+	override method evaluacionSanciones() = super() - sancionExtra + self.evaluacionEstrellas()
 
 }
 

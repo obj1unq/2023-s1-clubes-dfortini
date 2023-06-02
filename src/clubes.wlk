@@ -34,6 +34,11 @@ class Club {
 	method evaluacion() = self.evalucionBruta() / socios.size()
 
 	method evalucionBruta() = perfilClub.evalucionBruta(self)
+	
+	method esPrestigioso() = self.tieneUnEquipoExperimentado() or tieneActividadConEstrellas() 
+	
+	method tieneUnEquipoExperimentado() = self.actividades().any({actividad => actividad.esExperimentado()})
+	
 
 }
 
