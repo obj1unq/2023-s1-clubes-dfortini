@@ -8,9 +8,7 @@ class Club {
 	var property socios = #{}
 	var property perfilClub
 	var property valorPaseEstrella = 100
-
-	method evaluar() {
-	}
+	var property gastoMensual = 0
 
 	method agregarSocio(nuevoSocio) {
 		socios.add(nuevoSocio)
@@ -33,6 +31,10 @@ class Club {
 		}
 	}
 
+	method evaluacion() = self.evalucionBruta() / socios.size()
+
+	method evalucionBruta() = perfilClub.evalucionBruta(self)
+
 }
 
 class PerfilClub {
@@ -45,6 +47,12 @@ class PerfilClub {
 		return socio.cantidadActividades() >= 3
 	}
 
+	method evalucionBruta(club) = self.sumaEvaluacionesActividades(club) - self.gasto(club)
+
+	method sumaEvaluacionesActividades(club) = club.actividades().sum({ actividad => actividad.evaluacion() })
+
+	method gasto(club) = 0
+
 }
 
 object tradicional inherits PerfilClub {
@@ -52,6 +60,8 @@ object tradicional inherits PerfilClub {
 	method esEstrella(socio) {
 		return self.parcitipaDeMuchasActividades(socio) or self.superaValorDePaseEstrella(socio)
 	}
+
+	override method gasto(club) = club.gastoMensual()
 
 }
 
@@ -68,6 +78,10 @@ object profesional inherits PerfilClub {
 	method esEstrella(jugador) {
 		return self.superaValorDePaseEstrella(jugador)
 	}
+
+	override method gasto(club) = club.gastoMensual() * 5
+
+	override method sumaEvaluacionesActividades(club) = super(club) * 2
 
 }
 

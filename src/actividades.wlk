@@ -71,7 +71,7 @@ class Futbol inherits ActividadDeportiva {
 
 	method evaluacionEstrellas() = self.estrellas().size() * puntosPorEstrellas
 	
-	override method evaluacionSanciones() = super() + sancionExtra + self.evaluacionEstrellas() 
+	override method evaluacionSanciones() = super() - sancionExtra + self.evaluacionEstrellas() 
 
 }
 
