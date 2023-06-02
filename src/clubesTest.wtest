@@ -1,0 +1,50 @@
+import clubes.*
+import socios.*
+import actividades.*
+
+describe "evaluacion club" {
+
+	const clubDeIngenieria = new Club(perfilClub = profesional)
+	const clubSanTelmo = new Club(perfilClub = tradicional)
+	const clubIslaMaciel = new Club(perfilClub = comunitario)
+	const comedor = new ActividadSocial()
+	const yoga = new ActividadSocial()
+	const futbol = new ActividadDeportiva()
+	const deby = new Jugador(club = clubIslaMaciel, edad = 25)
+	const leito = new Jugador(club = clubDeIngenieria, edad = 35)
+	const pepe = new Socio(club = clubSanTelmo)
+
+	method initialize() {
+		clubIslaMaciel.actividades(#{ comedor, yoga, futbol })
+		comedor.participantes().add(deby)
+		yoga.participantes().add(deby)
+		futbol.participantes().add(deby)
+	}
+
+	test "cuando un jugador cambia de club sus partidos jugados vuelven a 0" {
+		deby.club(clubSanTelmo)
+		deby.jugoPartido()
+		assert.equals(1, deby.partidosJugados())
+		clubDeIngenieria.agregarSocio(deby)
+		assert.equals(0, deby.partidosJugados())
+	}
+
+	test "socio de club comunitario es estrella pues participa de mas de 3 actividades" {
+		assert.equals(3, clubIslaMaciel.cantidadActividades(deby))
+		assert.that(deby.esEstrella())
+	}
+
+	test "jugador de club tradicional no es estrella pues no cumple ninguna condicion" {
+		deby.club(clubSanTelmo)
+		assert.notThat(deby.esEstrella())
+		// ahora si cumpla la muchas actividades pero no la de valor pase estrella
+		deby.club(clubSanTelmo)
+		assert.notThat(deby.esEstrella())
+		
+		// ahora si cumple ambas
+		deby.valorPase(1000)
+		assert.that(deby.esEstrella())
+	}
+	
+}
+
